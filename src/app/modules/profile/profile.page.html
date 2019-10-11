@@ -35,18 +35,19 @@
       <ion-card-header>
         <ion-card-title class="ion-text-center">{{ clientDetails.email }}</ion-card-title>
       </ion-card-header>
-
       <ion-item-divider></ion-item-divider>
-      <ion-list lines="none">
-        <ion-item>
-          <ion-label>Name</ion-label>
-          <ion-chip>{{ clientDetails.name ? clientDetails.name : '-' }}</ion-chip>
-        </ion-item>
-        <ion-item>
-          <ion-label>Age</ion-label>
-          <ion-chip>{{ clientDetails.age ? clientDetails.age : '-' }}</ion-chip>
-        </ion-item>
-      </ion-list>
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>Name</ion-label>
+            <ion-chip>{{ clientDetails.name ? clientDetails.name : '-' }}</ion-chip>
+          </ion-item>
+          <ion-item>
+            <ion-label>Age</ion-label>
+            <ion-chip>{{ clientDetails.age ? clientDetails.age : '-' }}</ion-chip>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
     </ion-card>
 
     <ion-fab vertical="bottom" horizontal="end">

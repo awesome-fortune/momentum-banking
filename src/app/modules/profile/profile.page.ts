@@ -5,6 +5,8 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { AuthResponse } from '../../shared/models/auth-response';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -27,6 +29,21 @@ export class ProfilePage implements OnInit {
 
     this.clientDetailsService
       .getClientDetails(authState.localId, authState.idToken)
+      .pipe(catchError(error => {
+        if (error.status === 401) {
+          this.authService.logout();
+          this.router.navigate([ '/login' ]);
+        }
+
+        const clientDetails: ClientDetails = {
+          accounts: [],
+          name: null,
+          age: null,
+          email: null
+        };
+
+        return of(clientDetails);
+      }))
       .subscribe(clientDetails => {
         this.clientDetails = {
           accounts: clientDetails.accounts || null,
@@ -51,7 +68,7 @@ export class ProfilePage implements OnInit {
           cssClass: 'danger',
           handler: () => {
             this.authService.logout();
-            this.router.navigate(['/login']);
+            this.router.navigate([ '/login' ]);
           }
         }
       ]

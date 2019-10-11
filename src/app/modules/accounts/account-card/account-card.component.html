@@ -1,0 +1,54 @@
+<ion-card *ngIf="!bankAccount">
+  <ion-card-header>
+    <ion-card-title class="ion-text-center">
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-item-divider></ion-item-divider>
+
+  <ion-card-content>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="bankAccount">
+  <ion-card-header>
+    <ion-card-title class="ion-text-center">{{ accountNumber }}</ion-card-title>
+  </ion-card-header>
+
+  <ion-item-divider></ion-item-divider>
+
+  <ion-card-content>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label>Balance</ion-label>
+        <ion-chip [color]="bankAccount.balance > 0 ? 'success' : 'danger'">
+          {{ bankAccount.balance | currency:'R' }}
+        </ion-chip>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Overdraft</ion-label>
+        <ion-chip>{{ bankAccount.overdraft | currency:'R' }}</ion-chip>
+      </ion-item>
+
+      <ion-item>
+        <ion-button fill="outline" color="success" (click)="emitDepositMoney()">Deposit</ion-button>
+        <ion-button fill="outline" color="danger" (click)="emitWithdrawMoney()">Withdraw</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
