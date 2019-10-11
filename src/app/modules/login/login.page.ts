@@ -43,7 +43,7 @@ export class LoginPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: [ null, [ Validators.required ], { updateOn: 'change'} ],
+      email: [ null, [ Validators.required ] ],
       password: [ null, [ Validators.required ] ]
     });
 

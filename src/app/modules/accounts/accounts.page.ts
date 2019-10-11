@@ -4,10 +4,11 @@ import { AuthResponse } from '../../shared/models/auth-response';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { map } from 'rxjs/operators';
 import { BankAccount } from '../../shared/models/bank-account';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { DepositModalComponent } from './deposit-modal/deposit-modal.component';
 import { WithdrawalModalComponent } from './withdrawal-modal/withdrawal-modal.component';
 import { BankAccountService } from '../../core/services/bank-account/bank-account.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-accounts',
@@ -16,13 +17,16 @@ import { BankAccountService } from '../../core/services/bank-account/bank-accoun
 })
 export class AccountsPage implements OnInit {
   accountNumbers$;
+  loading$ = new BehaviorSubject<boolean>(false);
+
   private authState: AuthResponse;
 
   constructor(
     private clientDetailsService: ClientDetailsService,
     private authService: AuthService,
     private modalController: ModalController,
-    private bankAccountService: BankAccountService
+    private bankAccountService: BankAccountService,
+    private toastController: ToastController
   ) { }
 
   async ngOnInit() {
@@ -30,7 +34,7 @@ export class AccountsPage implements OnInit {
 
     this.accountNumbers$ = this.clientDetailsService
       .getClientDetails(this.authState.localId, this.authState.idToken)
-      .pipe(map(x => x.accounts ? x.accounts : x));
+      .pipe(map(x => x.accounts));
   }
 
   async onDepositMoney(bankAccount: BankAccount) {
@@ -42,7 +46,23 @@ export class AccountsPage implements OnInit {
     await modal.present();
     const { data } = await modal.onDidDismiss();
 
-    this.bankAccountService.updateBankAccount(data);
+    if (data) {
+      this.loading$.next(true);
+
+      this.bankAccountService
+        .updateBankAccount(data, this.authState.idToken)
+        .subscribe(async response => {
+          this.loading$.next(false);
+
+          const toast = await this.toastController.create({
+            message: 'Deposit successful',
+            duration: 3500,
+            position: 'top'
+          });
+
+          await toast.present();
+        });
+    }
   }
 
   async onWithdrawMoney(bankAccount: BankAccount) {

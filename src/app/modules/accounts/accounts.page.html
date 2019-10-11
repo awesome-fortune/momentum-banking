@@ -4,6 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-progress-bar type="indeterminate" *ngIf="loading$ | async"></ion-progress-bar>
+
 <ion-content>
   <app-account-card *ngFor="let accountNumber of (accountNumbers$ | async)"
                     (depositMoney)="onDepositMoney($event)"

@@ -1,4 +1,4 @@
-<ion-card *ngIf="!bankAccount">
+<ion-card *ngIf="!bankAccount && (loading$ | async)">
   <ion-card-header>
     <ion-card-title class="ion-text-center">
       <ion-skeleton-text animated></ion-skeleton-text>

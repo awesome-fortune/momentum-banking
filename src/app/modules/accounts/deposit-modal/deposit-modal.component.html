@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Deposit funds</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">
+      <ion-button (click)="dismissModal(null)">
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -43,7 +43,7 @@
           </ion-text>
         </ion-item>
 
-        <ion-button expand="full" class="ion-margin-top" (click)="depositMoney()">Proceed</ion-button>
+        <ion-button expand="full" [disabled]="depositForm.invalid" class="ion-margin-top" (click)="depositMoney()">Proceed</ion-button>
       </form>
     </ion-card-content>
   </ion-card>

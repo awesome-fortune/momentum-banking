@@ -12,10 +12,14 @@ export class BankAccountService {
   constructor(private httpClient: HttpClient) { }
 
   getBankAccount(accountNumber: string, idToken: string): Observable<BankAccount> {
-    return this.httpClient.get<BankAccount>(`${environment.api.accountsBaseUri}/${accountNumber}.json?auth=${idToken}`)
+    return this.httpClient.get<BankAccount>(`${environment.api.accountsBaseUri}/${accountNumber}.json?auth=${idToken}`);
   }
 
-  updateBankAccount(bankAccount: BankAccount) {
-    console.log(bankAccount);
+  updateBankAccount(bankAccount: BankAccount, idToken: string) {
+    return this.httpClient
+      .put(
+        `${environment.api.accountsBaseUri}/${bankAccount.accountNumber}.json?auth=${idToken}`,
+        { balance: bankAccount.balance, overdraft: bankAccount.overdraft }
+        );
   }
 }

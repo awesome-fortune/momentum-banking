@@ -3,7 +3,6 @@ import { BankAccount } from '../../../shared/models/bank-account';
 import { AlertController, ModalController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, startWith } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-deposit-modal',
@@ -29,7 +28,7 @@ export class DepositModalComponent implements OnInit {
 
   ngOnInit() {
     this.depositForm = this.fb.group({
-      depositAmount: [ 0, [ Validators.required ] ]
+      depositAmount: [ null, [ Validators.required ] ]
     });
 
     this.depositAmount.valueChanges.pipe(
@@ -42,14 +41,19 @@ export class DepositModalComponent implements OnInit {
       });
   }
 
-  async dismissModal() {
-    await this.modalController.dismiss(this.bankAccount);
+  async dismissModal(bankAccount: BankAccount) {
+    await this.modalController.dismiss(bankAccount);
   }
 
   async depositMoney() {
     if (this.depositForm.valid) {
       const balance = parseFloat(this.bankAccount.balance.toString());
       const deposit = this.depositAmount.value;
+
+      if (deposit === 0) {
+        this.depositAmount.setErrors({ zeroAmount: true });
+        return;
+      }
 
       const alert = await this.alertController.create({
         header: 'Confirm deposit',
@@ -64,7 +68,7 @@ export class DepositModalComponent implements OnInit {
             cssClass: 'success',
             handler: () => {
               this.bankAccount.balance = balance + deposit;
-              this.dismissModal();
+              this.dismissModal(this.bankAccount);
             }
           }
         ]
