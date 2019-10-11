@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserCredentials } from '../../shared/models/user-credentials';
 import { catchError, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
-import { LoginService } from '../../core/services/login/login.service';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { AuthResponse } from '../../shared/models/auth-response';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 type LoginError = 'EMAIL_NOT_FOUND' | 'INVALID_PASSWORD';
 
@@ -32,7 +32,7 @@ export class LoginPage implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private loginService: LoginService
+    private authService: AuthService
   ) {
     this.userCredentials = {
       email: null,
@@ -74,7 +74,7 @@ export class LoginPage implements OnInit, OnDestroy {
   login() {
     if (this.loginForm.valid) {
       this.loading$.next(true);
-      this.loginService.login(this.userCredentials)
+      this.authService.login(this.userCredentials)
         .pipe(
           catchError(error => {
             const invalidPassword: LoginError = 'INVALID_PASSWORD';

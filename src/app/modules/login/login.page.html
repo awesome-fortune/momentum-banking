@@ -7,7 +7,7 @@
 <ion-progress-bar type="indeterminate" *ngIf="loading$ | async"></ion-progress-bar>
 
 <ion-content>
-  <ion-avatar class="dvt-logo ion-margin-top">
+  <ion-avatar class="ion-margin-top">
     <ion-img [src]="'assets/dvt.jpg'" [alt]="'DVT logo'"></ion-img>
   </ion-avatar>
 
@@ -37,7 +37,8 @@
             <ion-icon name="warning" color="danger"></ion-icon> Password is invalid
           </ion-text>
         </ion-item>
-        <ion-button [disabled]="loginForm.invalid || (loading$ | async)" (click)="login()" expand="full">Login</ion-button>
+
+        <ion-button class="ion-margin-top" [disabled]="loginForm.invalid || (loading$ | async)" (click)="login()" expand="full">Login</ion-button>
       </form>
     </ion-card-content>
   </ion-card>

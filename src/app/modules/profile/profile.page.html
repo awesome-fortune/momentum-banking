@@ -6,4 +6,53 @@
 
 <ion-content>
 
+  <div *ngIf="!clientDetails">
+    <ion-skeleton-text animated class="skeleton-image"></ion-skeleton-text>
+
+    <ion-card class="ion-margin-top">
+      <ion-card-header>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-card-header>
+
+      <ion-item-divider></ion-item-divider>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-item>
+        <ion-item>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+  </div>
+
+  <div *ngIf="clientDetails">
+    <ion-avatar class="ion-margin-top">
+      <ion-icon name="person" class=""></ion-icon>
+    </ion-avatar>
+
+    <ion-card class="ion-margin-top">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">{{ clientDetails.email }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-item-divider></ion-item-divider>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>Name</ion-label>
+          <ion-chip>{{ clientDetails.name ? clientDetails.name : '-' }}</ion-chip>
+        </ion-item>
+        <ion-item>
+          <ion-label>Age</ion-label>
+          <ion-chip>{{ clientDetails.age ? clientDetails.age : '-' }}</ion-chip>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+
+    <ion-fab vertical="bottom" horizontal="end">
+      <ion-fab-button color="danger" size="small" (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
 </ion-content>
