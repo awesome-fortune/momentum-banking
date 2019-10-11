@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: {
+    loginUri: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAR4Yezxk7Ao4qeFntu7tIvE7pH28Eh64Y',
+    clientsBaseUri: 'https://momentum-retail-practical-test.firebaseio.com/clients',
+    accountsBaseUri: 'https://momentum-retail-practical-test.firebaseio.com/accounts'
+  }
 };
 
 /*
