@@ -6,8 +6,7 @@ import { catchError, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { AuthResponse } from '../../shared/models/auth-response';
 import { AuthService } from '../../core/services/auth/auth.service';
-
-type LoginError = 'EMAIL_NOT_FOUND' | 'INVALID_PASSWORD';
+import { LoginError } from '../../shared/models/types';
 
 @Component({
   selector: 'app-login',

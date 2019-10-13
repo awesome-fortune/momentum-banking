@@ -1,5 +1,5 @@
 export interface BankAccount {
   balance: number;
-  overdraft: string;
+  overdraft: number;
   accountNumber?: string;
 }

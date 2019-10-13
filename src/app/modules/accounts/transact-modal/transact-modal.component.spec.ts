@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WithdrawalModalComponent } from './withdrawal-modal.component';
+import { TransactModalComponent } from './transact-modal.component';
 
-describe('WithdrawalModalComponent', () => {
-  let component: WithdrawalModalComponent;
-  let fixture: ComponentFixture<WithdrawalModalComponent>;
+describe('TransactModalComponent', () => {
+  let component: TransactModalComponent;
+  let fixture: ComponentFixture<TransactModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WithdrawalModalComponent ],
+      declarations: [ TransactModalComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WithdrawalModalComponent);
+    fixture = TestBed.createComponent(TransactModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

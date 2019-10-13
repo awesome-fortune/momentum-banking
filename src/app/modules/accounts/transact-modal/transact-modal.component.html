@@ -1,6 +1,6 @@
 <ion-header translucent>
   <ion-toolbar>
-    <ion-title>Deposit funds</ion-title>
+    <ion-title>{{ transactionType | titlecase }} funds</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismissModal(null)">
         <ion-icon name="close"></ion-icon>
@@ -30,20 +30,24 @@
 
   <ion-card>
     <ion-card-content>
-      <form [formGroup]="depositForm">
+      <form [formGroup]="form">
         <ion-item>
           <ion-label>Amount: R</ion-label>
-          <ion-input min="1" formControlName="depositAmount" type="number"></ion-input>
-          <ion-text color="danger" *ngIf="depositForm.touched && depositAmount.hasError('required')">
+          <ion-input formControlName="amount" type="number"></ion-input>
+          <ion-text color="danger" *ngIf="form.touched && amount.hasError('required')">
             <ion-icon name="warning" color="danger"></ion-icon> Amount is required
           </ion-text>
 
-          <ion-text color="danger" *ngIf="depositForm.touched && depositAmount.hasError('zeroAmount')">
+          <ion-text color="danger" *ngIf="form.touched && amount.hasError('min')">
             <ion-icon name="warning" color="danger"></ion-icon> Invalid amount
+          </ion-text>
+
+          <ion-text color="danger" *ngIf="form.touched && amount.hasError('insufficientFunds')">
+            <ion-icon name="warning" color="danger"></ion-icon> Insufficient funds
           </ion-text>
         </ion-item>
 
-        <ion-button expand="full" [disabled]="depositForm.invalid" class="ion-margin-top" (click)="depositMoney()">Proceed</ion-button>
+        <ion-button expand="full" [disabled]="form.invalid" class="ion-margin-top" (click)="transact()">Proceed</ion-button>
       </form>
     </ion-card-content>
   </ion-card>

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { AccountsPage } from './accounts.page';
 import { AccountCardComponent } from './account-card/account-card.component';
-import { WithdrawalModalComponent } from './withdrawal-modal/withdrawal-modal.component';
-import { DepositModalComponent } from './deposit-modal/deposit-modal.component';
+import { TransactModalComponent } from './transact-modal/transact-modal.component';
 
 const routes: Routes = [
   {
@@ -23,7 +22,8 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [WithdrawalModalComponent, DepositModalComponent],
-  declarations: [AccountsPage, AccountCardComponent, WithdrawalModalComponent, DepositModalComponent]
+  providers: [CurrencyPipe, TitleCasePipe],
+  entryComponents: [TransactModalComponent],
+  declarations: [AccountsPage, AccountCardComponent, TransactModalComponent]
 })
 export class AccountsPageModule {}
