@@ -21,7 +21,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Overdraft</ion-label>
+          <ion-label>Overdraft limit</ion-label>
           <ion-chip>{{ bankAccount.overdraft | currency:'R' }}</ion-chip>
         </ion-item>
       </ion-list>
@@ -30,7 +30,7 @@
 
   <ion-card>
     <ion-card-content>
-      <form [formGroup]="form">
+      <form [formGroup]="form" (ngSubmit)="transact()">
         <ion-item>
           <ion-label>Amount: R</ion-label>
           <ion-input formControlName="amount" type="number"></ion-input>
@@ -47,7 +47,7 @@
           </ion-text>
         </ion-item>
 
-        <ion-button expand="full" [disabled]="form.invalid" class="ion-margin-top" (click)="transact()">Proceed</ion-button>
+        <ion-button type="submit" expand="full" [disabled]="form.invalid" class="ion-margin-top">Proceed</ion-button>
       </form>
     </ion-card-content>
   </ion-card>

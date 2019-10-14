@@ -1,27 +1,41 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { BankAccount } from '../../../shared/models/bank-account';
 import { BankAccountService } from '../../../core/services/bank-account/bank-account.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { AuthResponse } from '../../../shared/models/auth-response';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-card',
   templateUrl: './account-card.component.html',
   styleUrls: [ './account-card.component.scss' ],
 })
-export class AccountCardComponent implements OnInit {
+export class AccountCardComponent implements OnInit, OnDestroy {
   @Input()
   accountNumber;
 
   @Output()
-  depositMoney: EventEmitter<BankAccount> = new EventEmitter();
+  depositMoney: EventEmitter<BankAccount> = new EventEmitter<BankAccount>();
 
   @Output()
-  withdrawMoney: EventEmitter<BankAccount> = new EventEmitter();
+  withdrawMoney: EventEmitter<BankAccount> = new EventEmitter<BankAccount>();
+
+  @Output()
+  manageAccount: EventEmitter<BankAccount> = new EventEmitter<BankAccount>();
+
+  @Output()
+  addNewAccount: EventEmitter<BankAccount> = new EventEmitter<BankAccount>();
 
   bankAccount: BankAccount;
   loading$ = new BehaviorSubject<boolean>(false);
+
+  private unsubscribe$ = new Subject();
+
+  @HostListener('click', ['$event.target'])
+  onClick() {
+    this.manageAccount.emit(this.bankAccount);
+  }
 
   constructor(
     private bankAccountService: BankAccountService,
@@ -35,19 +49,24 @@ export class AccountCardComponent implements OnInit {
     const authState: AuthResponse = await this.authService.authState;
     this.bankAccountService
       .getBankAccount(this.accountNumber, authState.idToken)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(bankAccount => {
         this.loading$.next(false);
         this.bankAccount = bankAccount;
+        this.bankAccount.accountNumber = this.accountNumber;
       });
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   emitDepositMoney() {
-    this.bankAccount.accountNumber = this.accountNumber;
     this.depositMoney.emit(this.bankAccount);
   }
 
   emitWithdrawMoney() {
-    this.bankAccount.accountNumber = this.accountNumber;
     this.withdrawMoney.emit(this.bankAccount);
   }
 

@@ -33,7 +33,7 @@
 
     <ion-card class="ion-margin-top">
       <ion-card-header>
-        <ion-card-title class="ion-text-center">{{ clientDetails.email }}</ion-card-title>
+        <ion-card-title class="ion-text-center">{{ clientDetails.email ? clientDetails.email : '-' }}</ion-card-title>
       </ion-card-header>
       <ion-item-divider></ion-item-divider>
       <ion-card-content>
@@ -50,7 +50,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button color="danger" size="small" (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </ion-fab-button>

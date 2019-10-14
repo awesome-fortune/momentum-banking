@@ -13,7 +13,7 @@
 
   <ion-card>
     <ion-card-content>
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
         <ion-item>
           <ion-label>Email</ion-label>
           <ion-input type="email" (ionFocus)="email.setErrors(null)" inputmode="email" formControlName="email"></ion-input>
@@ -38,7 +38,7 @@
           </ion-text>
         </ion-item>
 
-        <ion-button class="ion-margin-top" [disabled]="loginForm.invalid || (loading$ | async)" (click)="login()" expand="full">Login</ion-button>
+        <ion-button type="submit" class="ion-margin-top" [disabled]="loginForm.invalid || (loading$ | async)" expand="full">Login</ion-button>
       </form>
     </ion-card-content>
   </ion-card>

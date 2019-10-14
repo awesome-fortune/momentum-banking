@@ -1,17 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BankAccount } from '../../../shared/models/bank-account';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { TransactionType } from '../../../shared/models/types';
-import { distinctUntilChanged, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-transact-modal',
   templateUrl: './transact-modal.component.html',
   styleUrls: [ './transact-modal.component.scss' ],
 })
-export class TransactModalComponent implements OnInit {
+export class TransactModalComponent implements OnInit, OnDestroy {
   @Input()
   bankAccount: BankAccount;
 
@@ -23,6 +24,8 @@ export class TransactModalComponent implements OnInit {
   get amount() {
     return this.form.get('amount');
   }
+
+  private unsubscribe$ = new Subject();
 
   constructor(
     private modalController: ModalController,
@@ -41,7 +44,8 @@ export class TransactModalComponent implements OnInit {
     this.amount.valueChanges
       .pipe(
         startWith(0),
-        distinctUntilChanged())
+        distinctUntilChanged(),
+        takeUntil(this.unsubscribe$))
       .subscribe(amount => {
         const availableFunds = parseFloat(this.bankAccount.balance.toFixed(2)) + parseFloat(this.bankAccount.overdraft.toFixed(2));
 
@@ -49,6 +53,11 @@ export class TransactModalComponent implements OnInit {
           this.amount.setErrors({ insufficientFunds: true });
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   async dismissModal(bankAccount: BankAccount) {

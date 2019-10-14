@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { AccountsPage } from './accounts.page';
 import { AccountCardComponent } from './account-card/account-card.component';
 import { TransactModalComponent } from './transact-modal/transact-modal.component';
+import { AccountManagementModalComponent } from './account-management-modal/account-management-modal.component';
 
 const routes: Routes = [
   {
@@ -22,8 +23,9 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  providers: [CurrencyPipe, TitleCasePipe],
-  entryComponents: [TransactModalComponent],
-  declarations: [AccountsPage, AccountCardComponent, TransactModalComponent]
+  providers: [ CurrencyPipe, TitleCasePipe ],
+  entryComponents: [ TransactModalComponent, AccountManagementModalComponent ],
+  declarations: [ AccountsPage, AccountCardComponent, TransactModalComponent, AccountManagementModalComponent ]
 })
-export class AccountsPageModule {}
+export class AccountsPageModule {
+}

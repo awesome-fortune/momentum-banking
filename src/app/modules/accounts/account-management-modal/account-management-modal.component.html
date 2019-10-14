@@ -1,0 +1,107 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title *ngIf="accountManagementTypeAction === 'manage'">Mange account</ion-title>
+    <ion-title *ngIf="accountManagementTypeAction === 'add'">Add new account</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal(null)">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-avatar class="ion-margin-top ion-margin-bottom">
+    <ion-icon [name]="accountManagementTypeAction === 'manage' ? 'wallet' : 'cash'"></ion-icon>
+  </ion-avatar>
+
+  <ion-card class="ion-no-margin" *ngIf="accountManagementTypeAction === 'manage' && bankAccount">
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>Balance</ion-label>
+          <ion-chip [color]="bankAccount.balance > 0 ? 'success' : 'danger'">
+            {{ bankAccount.balance | currency:'R' }}
+          </ion-chip>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Overdraft limit</ion-label>
+          <ion-chip>{{ bankAccount.overdraft | currency:'R' }}</ion-chip>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="accountManagementTypeAction === 'manage'">
+    <ion-card-content>
+      <form [formGroup]="accountManagementForm" (ngSubmit)="changeAccountLimits()">
+        <ion-list>
+          <ion-radio-group (ionChange)="onChangeOverdraftLimitUpdate($event)">
+            <ion-list-header>
+              <ion-label>Mange overdraft limit</ion-label>
+            </ion-list-header>
+
+            <ion-item>
+              <ion-label>Increase</ion-label>
+              <ion-radio color="success" value="increase-overdraft" formControlName="increaseOverdraftLimit" slot="start" checked></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Decrease</ion-label>
+              <ion-radio color="warning" value="decrease-overdraft" formControlName="decreaseOverdraftLimit" slot="start"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+          <ion-item>
+            <ion-label>Amount: R</ion-label>
+            <ion-input formControlName="overdraftLimitAmount" type="number"></ion-input>
+            <ion-text color="danger" *ngIf="accountManagementForm.touched && overdraftLimitAmount.hasError('required')">
+              <ion-icon name="warning" color="danger"></ion-icon> Amount is required
+            </ion-text>
+
+            <ion-text color="danger" *ngIf="accountManagementForm.touched && (overdraftLimitAmount.hasError('min') || overdraftLimitAmount.hasError('invalidAmount'))">
+              <ion-icon name="warning" color="danger"></ion-icon> Amount is invalid
+            </ion-text>
+          </ion-item>
+        </ion-list>
+
+        <ion-button [disabled]="accountManagementForm.invalid" expand="full" type="submit">Proceed</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="accountManagementTypeAction === 'add'">
+    <ion-card-content>
+      <form [formGroup]="newAccountForm" (ngSubmit)="openNewAccount()">
+        <ion-item>
+          <ion-label>Overdraft limit: R</ion-label>
+          <ion-input formControlName="initialOverdraftLimit" type="number"></ion-input>
+
+          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('required')">
+            <ion-icon name="warning" color="danger"></ion-icon> Amount is required
+          </ion-text>
+
+          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('min')">
+            <ion-icon name="warning" color="danger"></ion-icon> Amount is invalid
+          </ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Opening balance: R</ion-label>
+          <ion-input formControlName="initialOpeningBalance" type="number"></ion-input>
+
+          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('required')">
+            <ion-icon name="warning" color="danger"></ion-icon> Amount is required
+          </ion-text>
+
+          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('min')">
+            <ion-icon name="warning" color="danger"></ion-icon> Amount is invalid
+          </ion-text>
+        </ion-item>
+
+        <ion-button type="submit" class="ion-margin-top" expand="full">Proceed</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

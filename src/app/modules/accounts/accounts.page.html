@@ -4,12 +4,30 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-progress-bar type="indeterminate" *ngIf="loading$ | async"></ion-progress-bar>
+<ion-progress-bar type="indeterminate"
+                  [ngStyle]="{ 'visibility': (loading$ | async) ? 'visible' : 'hidden' }"></ion-progress-bar>
 
 <ion-content>
-  <app-account-card *ngFor="let accountNumber of (accountNumbers$ | async)"
+  <app-account-card *ngFor="let accountNumber of accountNumbers"
+                    (manageAccount)="onManageAccount($event)"
                     (depositMoney)="onDepositMoney($event)"
                     (withdrawMoney)="onWithdrawMoney($event)"
                     [accountNumber]="accountNumber">
   </app-account-card>
+
+  <ion-card *ngIf="accountNumbers && accountNumbers.length == 0">
+    <ion-card-header>
+      <ion-card-title>No active accounts</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text>You don't have any active accounts, press the <ion-text color="primary">plus</ion-text> button to add a new account.</ion-text>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" size="small" (click)="addNewAccount()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

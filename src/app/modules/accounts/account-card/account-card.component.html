@@ -24,7 +24,7 @@
   </ion-card-content>
 </ion-card>
 
-<ion-card *ngIf="bankAccount">
+<ion-card button *ngIf="bankAccount">
   <ion-card-header>
     <ion-card-title class="ion-text-center">Account: {{ accountNumber }}</ion-card-title>
   </ion-card-header>
@@ -41,7 +41,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Overdraft</ion-label>
+        <ion-label>Overdraft limit</ion-label>
         <ion-chip>{{ bankAccount.overdraft | currency:'R' }}</ion-chip>
       </ion-item>
 
