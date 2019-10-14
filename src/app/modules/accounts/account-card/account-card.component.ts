@@ -32,7 +32,7 @@ export class AccountCardComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject();
 
-  @HostListener('click', ['$event.target'])
+  @HostListener('click')
   onClick() {
     this.manageAccount.emit(this.bankAccount);
   }
