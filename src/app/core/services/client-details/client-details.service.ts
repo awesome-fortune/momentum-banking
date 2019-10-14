@@ -15,4 +15,12 @@ export class ClientDetailsService {
   getClientDetails(localId: string, idToken: string): Observable<ClientDetails> {
     return this.httpClient.get<ClientDetails>(`${environment.api.clientsBaseUri}/${localId}.json?auth=${idToken}`);
   }
+
+  updateAccountList(accountNumbers: number[], localId: string, idToken) {
+    return this.httpClient
+      .put(
+        `${environment.api.clientsBaseUri}/${localId}/accounts.json?auth=${idToken}`,
+        accountNumbers
+      );
+  }
 }

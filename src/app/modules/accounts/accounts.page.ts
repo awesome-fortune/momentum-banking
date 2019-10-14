@@ -6,7 +6,7 @@ import { catchError, map, takeUntil } from 'rxjs/operators';
 import { BankAccount } from '../../shared/models/bank-account';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { BankAccountService } from '../../core/services/bank-account/bank-account.service';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
 import { ClientDetails } from '../../shared/models/client-details';
 import { Router } from '@angular/router';
 import { TransactModalComponent } from './transact-modal/transact-modal.component';
@@ -56,9 +56,10 @@ export class AccountsPage implements OnInit, OnDestroy {
           return of(clientDetails);
         }),
         map(x => x && x.accounts ? x.accounts : []),
-        takeUntil(this.unsubscribe$)).subscribe(accountNumbers => {
-          this.accountNumbers = accountNumbers;
-    });
+        takeUntil(this.unsubscribe$))
+      .subscribe(accountNumbers => {
+        this.accountNumbers = accountNumbers;
+      });
   }
 
   ngOnDestroy() {
@@ -144,7 +145,7 @@ export class AccountsPage implements OnInit, OnDestroy {
 
   async addNewAccount() {
     const accountManagementTypeAction: AccountActionType = 'add';
-    let newAccountNumber = Math.floor(Math.random() * 1000000000);;
+    let newAccountNumber = Math.floor(Math.random() * 1000000000);
 
     if (this.accountNumbers.indexOf(newAccountNumber) !== -1) {
       do {
@@ -169,10 +170,14 @@ export class AccountsPage implements OnInit, OnDestroy {
 
     if (data) {
       this.loading$.next(true);
+      this.accountNumbers.push(newAccountNumber);
 
-      this.bankAccountService
-        .updateBankAccount(data, this.authState.idToken)
-        .subscribe(async response => {
+      forkJoin([
+        this.bankAccountService.updateBankAccount(data, this.authState.idToken),
+        this.clientDetailsService.updateAccountList(this.accountNumbers, this.authState.localId, this.authState.idToken),
+      ])
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(async result => {
           this.loading$.next(false);
 
           const toast = await this.toastController.create({
