@@ -104,7 +104,7 @@ export class AccountsPage implements OnInit, OnDestroy {
       const alert = await this.alertController.create({
         header: 'Insufficient funds',
         // tslint:disable-next-line:max-line-length
-        message: 'You have insufficient funds available to carry out a withdrawal. Please deposit funds into your account in order to make withdrawals.',
+        message: 'You have insufficient funds available to carry out a withdrawal. Please deposit funds into your account or increase your overdraft limit in order to make withdrawals.',
         buttons: [
           {
             text: 'Dismiss',
