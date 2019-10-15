@@ -32,11 +32,6 @@ export class AccountCardComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject();
 
-  @HostListener('click')
-  onClick() {
-    this.manageAccount.emit(this.bankAccount);
-  }
-
   constructor(
     private bankAccountService: BankAccountService,
     private authService: AuthService
@@ -70,4 +65,7 @@ export class AccountCardComponent implements OnInit, OnDestroy {
     this.withdrawMoney.emit(this.bankAccount);
   }
 
+  emitManageAccount() {
+    this.manageAccount.emit(this.bankAccount);
+  }
 }

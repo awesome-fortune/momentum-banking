@@ -24,7 +24,7 @@
   </ion-card-content>
 </ion-card>
 
-<ion-card button *ngIf="bankAccount">
+<ion-card *ngIf="bankAccount">
   <ion-card-header>
     <ion-card-title class="ion-text-center">Account: {{ accountNumber }}</ion-card-title>
   </ion-card-header>
@@ -48,6 +48,7 @@
       <ion-item>
         <ion-button fill="outline" color="success" (click)="emitDepositMoney()">Deposit</ion-button>
         <ion-button fill="outline" color="danger" (click)="emitWithdrawMoney()">Withdraw</ion-button>
+        <ion-button fill="outline" color="primary" (click)="emitManageAccount()">Manage</ion-button>
       </ion-item>
     </ion-list>
   </ion-card-content>
