@@ -135,18 +135,22 @@ export class AccountManagementModalComponent implements OnInit, OnDestroy {
 
   private initAccountManagementForm() {
     this.accountManagementForm = this.fb.group({
-      overdraftLimitAmount: [ null, [ Validators.required, Validators.min(1) ] ],
+      overdraftLimitAmount: [ '', [ Validators.required, Validators.min(1) ] ],
       increaseOverdraftLimit: [ true ],
       decreaseOverdraftLimit: { value: false, disabled: parseFloat(this.bankAccount.overdraft.toFixed(2)) === 0 }
     });
 
     this.overdraftLimitAmount.valueChanges
       .pipe(
-        startWith(0),
         distinctUntilChanged(),
         takeUntil(this.unsubscribe$))
       .subscribe(amount => {
-        if (this.overdraftLimitUpdate === 'decrease-overdraft' && (parseFloat(this.bankAccount.overdraft.toFixed(2)) - amount < 0)) {
+        const overdraft = parseFloat(this.bankAccount.overdraft.toFixed(2));
+        const balance = parseFloat(this.bankAccount.balance.toFixed(2));
+
+        if (this.overdraftLimitUpdate === 'decrease-overdraft'
+          && (overdraft - amount < 0)
+          || ((balance < 0) && (overdraft - amount < balance * -1))) {
           this.overdraftLimitAmount.setErrors({ invalidAmount: true });
         }
       });
@@ -154,8 +158,8 @@ export class AccountManagementModalComponent implements OnInit, OnDestroy {
 
   private initNewAccountForm() {
     this.newAccountForm = this.fb.group({
-      initialOverdraftLimit: [ 0, [ Validators.required, Validators.min(0) ] ],
-      initialOpeningBalance: [ 0, [ Validators.required, Validators.min(0) ] ]
+      initialOverdraftLimit: [ null, [ Validators.required, Validators.min(0) ] ],
+      initialOpeningBalance: [ null, [ Validators.required, Validators.min(0) ] ]
     });
   }
 }
