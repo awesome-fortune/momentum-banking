@@ -54,8 +54,7 @@
           </ion-radio-group>
 
           <ion-item>
-            <ion-label>Amount: R</ion-label>
-            <ion-input formControlName="overdraftLimitAmount" type="number"></ion-input>
+            <ion-input placeholder="Amount" formControlName="overdraftLimitAmount" type="number"></ion-input>
             <ion-text color="danger" *ngIf="accountManagementForm.touched && overdraftLimitAmount.hasError('required')">
               <ion-icon name="warning" color="danger"></ion-icon> Amount is required
             </ion-text>
@@ -75,8 +74,7 @@
     <ion-card-content>
       <form [formGroup]="newAccountForm" (ngSubmit)="openNewAccount()">
         <ion-item>
-          <ion-label>Overdraft limit: R</ion-label>
-          <ion-input formControlName="initialOverdraftLimit" type="number"></ion-input>
+          <ion-input placeholder="Overdraft limit" formControlName="initialOverdraftLimit" type="number"></ion-input>
 
           <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('required')">
             <ion-icon name="warning" color="danger"></ion-icon> Amount is required
@@ -88,8 +86,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label>Opening balance: R</ion-label>
-          <ion-input formControlName="initialOpeningBalance" type="number"></ion-input>
+          <ion-input placeholder="Opening balance" formControlName="initialOpeningBalance" type="number"></ion-input>
 
           <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('required')">
             <ion-icon name="warning" color="danger"></ion-icon> Amount is required
