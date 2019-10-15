@@ -2,8 +2,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TransactModalComponent } from './transact-modal.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { ReactiveFormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
 import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 
 describe('TransactModalComponent', () => {
@@ -23,6 +23,8 @@ describe('TransactModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TransactModalComponent);
     component = fixture.componentInstance;
+    component.bankAccount = { balance: 0, overdraft: 0, accountNumber: '6841868' };
+
     fixture.detectChanges();
   });
 
