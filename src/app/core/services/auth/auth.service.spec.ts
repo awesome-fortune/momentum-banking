@@ -1,21 +1,10 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { of } from 'rxjs';
-import { AuthResponse } from '../../../shared/models/auth-response';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { authResponseStub } from '../../../shared/stubs/auth-response.stub';
 
 describe('AuthService', () => {
-  const authResponseStub: AuthResponse = {
-    localId: 'testLocalId',
-    email: 'test@email.com',
-    idToken: 'testIdToken',
-    displayName: '',
-    expiresIn: '3600',
-    kind: 'testKind',
-    refreshToken: 'ahsofhaosf1afa1sfasf0',
-    registered: true
-  };
-
   beforeEach(() => {
     const authServiceSpy = jasmine
       .createSpyObj('AuthService', ['login', 'logout', 'authState']);
