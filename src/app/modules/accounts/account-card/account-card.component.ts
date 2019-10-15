@@ -48,7 +48,10 @@ export class AccountCardComponent implements OnInit, OnDestroy {
       .subscribe(bankAccount => {
         this.loading$.next(false);
         this.bankAccount = bankAccount;
-        this.bankAccount.accountNumber = this.accountNumber;
+
+        if (this.bankAccount !== null) {
+          this.bankAccount.accountNumber = this.accountNumber;
+        }
       });
   }
 
