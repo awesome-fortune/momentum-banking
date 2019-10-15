@@ -6,7 +6,6 @@ import { catchError, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { AuthResponse } from '../../shared/models/auth-response';
 import { AuthService } from '../../core/services/auth/auth.service';
-import { LoginError } from '../../shared/models/types';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +30,7 @@ export class LoginPage implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.userCredentials = {
       email: null,
@@ -76,19 +75,8 @@ export class LoginPage implements OnInit, OnDestroy {
       this.authService.login(this.userCredentials)
         .pipe(
           catchError(error => {
-            const invalidPassword: LoginError = 'INVALID_PASSWORD';
-            const emailNotFound: LoginError = 'EMAIL_NOT_FOUND';
-            const errorMessage = error.error.error.message;
-
-            this.loading$.next(false);
-
-            if (errorMessage === invalidPassword) {
-              this.password.setErrors({ invalidPassword: true });
-            }
-
-            if (errorMessage === emailNotFound) {
-              this.email.setErrors({ emailNotFound: true });
-            }
+            this.email.setErrors({ invalidCredentials: true });
+            this.password.setErrors({ invalidCredentials: true });
 
             return of([]);
           }),
