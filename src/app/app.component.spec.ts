@@ -6,8 +6,6 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
-import { Network } from '@ionic-native/network/ngx';
-import { Observable } from 'rxjs';
 
 describe('AppComponent', () => {
 
