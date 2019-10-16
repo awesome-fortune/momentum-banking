@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Network } from '@ionic-native/network/ngx';
+import { InternetDisconnectedModalComponent } from './internet-disconnected-modal/internet-disconnected-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +12,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 })
 export class AppComponent {
   constructor(
+    private modalController: ModalController,
+    private network: Network,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
@@ -21,6 +25,13 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.network.onDisconnect().subscribe(async result => {
+        const modal = await this.modalController.create({
+          component: InternetDisconnectedModalComponent
+        });
+
+        await modal.present();
+      });
     });
   }
 }

@@ -74,18 +74,6 @@
     <ion-card-content>
       <form [formGroup]="newAccountForm" (ngSubmit)="openNewAccount()">
         <ion-item>
-          <ion-input placeholder="Overdraft limit" formControlName="initialOverdraftLimit" type="number"></ion-input>
-
-          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('required')">
-            <ion-icon name="warning" color="danger"></ion-icon> Amount is required
-          </ion-text>
-
-          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('min')">
-            <ion-icon name="warning" color="danger"></ion-icon> Amount is invalid
-          </ion-text>
-        </ion-item>
-
-        <ion-item>
           <ion-input placeholder="Opening balance" formControlName="initialOpeningBalance" type="number"></ion-input>
 
           <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('required')">
@@ -97,6 +85,17 @@
           </ion-text>
         </ion-item>
 
+        <ion-item>
+          <ion-input placeholder="Overdraft limit" formControlName="initialOverdraftLimit" type="number"></ion-input>
+
+          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('required')">
+            <ion-icon name="warning" color="danger"></ion-icon> Amount is required
+          </ion-text>
+
+          <ion-text color="danger" *ngIf="newAccountForm.touched && initialOverdraftLimit.hasError('min')">
+            <ion-icon name="warning" color="danger"></ion-icon> Amount is invalid
+          </ion-text>
+        </ion-item>
         <ion-button type="submit" class="ion-margin-top" expand="full">Proceed</ion-button>
       </form>
     </ion-card-content>

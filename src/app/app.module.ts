@@ -8,18 +8,23 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
+import { Network } from '@ionic-native/network/ngx';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
+import { InternetDisconnectedModalComponent } from './internet-disconnected-modal/internet-disconnected-modal.component';
 
 @NgModule({
-  declarations: [ AppComponent ],
-  entryComponents: [],
+  declarations: [ AppComponent, InternetDisconnectedModalComponent ],
+  entryComponents: [ InternetDisconnectedModalComponent ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
   ],
   providers: [
+    OpenNativeSettings,
+    Network,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

@@ -6,8 +6,7 @@ import { catchError, map, takeUntil } from 'rxjs/operators';
 import { BankAccount } from '../../shared/models/bank-account';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { BankAccountService } from '../../core/services/bank-account/bank-account.service';
-import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
-import { ClientDetails } from '../../shared/models/client-details';
+import { BehaviorSubject, EMPTY, forkJoin, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { TransactModalComponent } from './transact-modal/transact-modal.component';
 import { AccountActionType, TransactionType } from '../../shared/models/types';
@@ -19,11 +18,12 @@ import { AccountManagementModalComponent } from './account-management-modal/acco
   styleUrls: [ './accounts.page.scss' ],
 })
 export class AccountsPage implements OnInit, OnDestroy {
-  accountNumbers: number[];
   loading$ = new BehaviorSubject<boolean>(false);
+  accountNumbers$ = new BehaviorSubject<number[]>(null);
 
   private authState: AuthResponse;
   private unsubscribe$ = new Subject();
+  private accountNumbers: number[];
 
   constructor(
     private clientDetailsService: ClientDetailsService,
@@ -46,19 +46,14 @@ export class AccountsPage implements OnInit, OnDestroy {
             this.authService.logout();
             this.router.navigate([ '/login' ]);
           }
-          const clientDetails: ClientDetails = {
-            accounts: [],
-            name: null,
-            age: null,
-            email: null
-          };
 
-          return of(clientDetails);
+          return EMPTY;
         }),
         map(x => x && x.accounts ? x.accounts : []),
         takeUntil(this.unsubscribe$))
       .subscribe(accountNumbers => {
         this.accountNumbers = accountNumbers;
+        this.accountNumbers$.next(accountNumbers);
       });
   }
 
@@ -178,6 +173,7 @@ export class AccountsPage implements OnInit, OnDestroy {
       ])
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(async result => {
+          this.accountNumbers$.next(this.accountNumbers)
           this.loading$.next(false);
 
           const toast = await this.toastController.create({

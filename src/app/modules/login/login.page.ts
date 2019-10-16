@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserCredentials } from '../../shared/models/user-credentials';
-import { catchError, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { catchError, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Subject } from 'rxjs';
 import { AuthResponse } from '../../shared/models/auth-response';
 import { AuthService } from '../../core/services/auth/auth.service';
 
@@ -78,7 +78,7 @@ export class LoginPage implements OnInit, OnDestroy {
             this.email.setErrors({ invalidCredentials: true });
             this.password.setErrors({ invalidCredentials: true });
 
-            return of([]);
+            return EMPTY;
           }),
           takeUntil(this.unsubscribe$))
         .subscribe(async (response: AuthResponse) => {

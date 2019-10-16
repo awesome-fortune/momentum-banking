@@ -5,8 +5,8 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { AuthResponse } from '../../shared/models/auth-response';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -35,20 +35,7 @@ export class ProfilePage implements OnInit {
             this.router.navigate([ '/login' ]);
           }
 
-          const clientDetails: ClientDetails = {
-            accounts: [],
-            name: null,
-            age: null,
-            email: null
-          };
-
-          return of(clientDetails);
-        }),
-        map(x => x ? x : {
-          accounts: [],
-          name: null,
-          age: null,
-          email: authState.email || null
+          return EMPTY;
         }))
       .subscribe(clientDetails => {
         this.clientDetails = {

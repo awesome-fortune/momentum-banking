@@ -1,0 +1,15 @@
+ion-avatar {
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ion-icon {
+    font-size: 64px;
+    fill: #ffce00;
+  }
+}

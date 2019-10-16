@@ -8,14 +8,14 @@
                   [ngStyle]="{ 'visibility': (loading$ | async) ? 'visible' : 'hidden' }"></ion-progress-bar>
 
 <ion-content>
-  <app-account-card *ngFor="let accountNumber of accountNumbers"
+  <app-account-card *ngFor="let accountNumber of (accountNumbers$ | async)"
                     (manageAccount)="onManageAccount($event)"
                     (depositMoney)="onDepositMoney($event)"
                     (withdrawMoney)="onWithdrawMoney($event)"
                     [accountNumber]="accountNumber">
   </app-account-card>
 
-  <ion-card *ngIf="accountNumbers && accountNumbers.length == 0">
+  <ion-card *ngIf="(accountNumbers$ | async) && (accountNumbers$ | async)?.length == 0">
     <ion-card-header>
       <ion-card-title>No active accounts</ion-card-title>
     </ion-card-header>

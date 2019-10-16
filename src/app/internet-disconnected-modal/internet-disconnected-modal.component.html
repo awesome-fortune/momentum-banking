@@ -1,0 +1,23 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Connection lost</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-avatar class="ion-margin-top">
+    <ion-icon color="warning" name="alert"></ion-icon>
+  </ion-avatar>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-text>Your device is unable to connect to the internet, please check your device internet settings</ion-text>
+      <ion-button class="ion-margin-top" expand="full" (click)="openSettings()">Open settings</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

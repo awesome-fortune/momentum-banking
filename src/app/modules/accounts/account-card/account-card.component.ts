@@ -4,7 +4,7 @@ import { BankAccountService } from '../../../core/services/bank-account/bank-acc
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { AuthResponse } from '../../../shared/models/auth-response';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil, throttleTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-card',
@@ -42,17 +42,19 @@ export class AccountCardComponent implements OnInit, OnDestroy {
     this.loading$.next(true);
 
     const authState: AuthResponse = await this.authService.authState;
-    this.bankAccountService
-      .getBankAccount(this.accountNumber, authState.idToken)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(bankAccount => {
-        this.loading$.next(false);
-        this.bankAccount = bankAccount;
+    setTimeout(() => {
+      this.bankAccountService
+        .getBankAccount(this.accountNumber, authState.idToken)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(bankAccount => {
+          this.loading$.next(false);
+          this.bankAccount = bankAccount;
 
-        if (this.bankAccount !== null) {
-          this.bankAccount.accountNumber = this.accountNumber;
-        }
-      });
+          if (this.bankAccount !== null) {
+            this.bankAccount.accountNumber = this.accountNumber;
+          }
+        });
+    }, 1000);
   }
 
   ngOnDestroy() {
